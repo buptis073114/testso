@@ -7,7 +7,7 @@ PLATFORM_INCLUDE=$(PLATFORM_ROOT)\usr\include
 PLATFORM_LIB=$(PLATFORM_ROOT)\usr\lib
 MODULE_NAME=main
 RM=del
-
+OUTFILE=librusteze.so
 
 FLAGS=-I$(TOOLCHAINS_INCLUDE) \
 	-I$(PLATFORM_INCLUDE) \
@@ -24,6 +24,7 @@ all:
 	$(TOOLCHAINS_PREFIX)-gcc $(FLAGS) -E $(MODULE_NAME).c -o $(MODULE_NAME).i
 	$(TOOLCHAINS_PREFIX)-gcc $(FLAGS) -S $(MODULE_NAME).i -o $(MODULE_NAME).s
 	$(TOOLCHAINS_PREFIX)-gcc $(FLAGS) -c $(MODULE_NAME).s -o $(MODULE_NAME).o
-	$(TOOLCHAINS_PREFIX)-ld -shared -o librusteze.so $(MODULE_NAME).o
+	$(TOOLCHAINS_PREFIX)-ld -shared -o $(OUTFILE) $(MODULE_NAME).o
+	$(TOOLCHAINS_PREFIX)-strip $(OUTFILE)
 clean:
 	$(RM) *.o
