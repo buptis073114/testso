@@ -1213,8 +1213,8 @@ void __android_log_assert(const char *cond, const char *tag,
 
     ;
 # 12 "main.c" 2
-# 39 "main.c"
-int encrypt() {
+# 31 "main.c"
+static int encrypt() {
  int i = 0;
  char plaintext[128] = "abcdefg";
  __android_log_print(ANDROID_LOG_INFO,"ss","in encrypt!");

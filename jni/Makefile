@@ -7,7 +7,8 @@ PLATFORM_INCLUDE=$(PLATFORM_ROOT)\usr\include
 PLATFORM_LIB=$(PLATFORM_ROOT)\usr\lib
 MODULE_NAME=main
 RM=del
-OUTFILE=librusteze.so
+DYNAMIC_OUTFILE=librusteze.so
+STATIC_OUTFILE=out.a
 
 FLAGS=-I$(TOOLCHAINS_INCLUDE) \
 	-I$(PLATFORM_INCLUDE) \
@@ -15,7 +16,9 @@ FLAGS=-I$(TOOLCHAINS_INCLUDE) \
 	-nostdlib \
 	-lgcc \
 	-Bdynamic \
-	-lc
+	-lc \
+	-lz \
+	-llog 
 
 OBJS=$(MODULE_NAME).o \
 	$(PLATFORM_LIB)/crtbegin_dynamic.o \
@@ -24,7 +27,8 @@ all:
 	$(TOOLCHAINS_PREFIX)-gcc $(FLAGS) -E $(MODULE_NAME).c -o $(MODULE_NAME).i
 	$(TOOLCHAINS_PREFIX)-gcc $(FLAGS) -S $(MODULE_NAME).i -o $(MODULE_NAME).s
 	$(TOOLCHAINS_PREFIX)-gcc $(FLAGS) -c $(MODULE_NAME).s -o $(MODULE_NAME).o
-	$(TOOLCHAINS_PREFIX)-ld -shared -o $(OUTFILE) $(MODULE_NAME).o
-	$(TOOLCHAINS_PREFIX)-strip $(OUTFILE)
+	$(TOOLCHAINS_PREFIX)-ld -shared -o $(DYNAMIC_OUTFILE) $(MODULE_NAME).o
+	$(TOOLCHAINS_PREFIX)-ar rcs $(STATIC_OUTFILE) $(MODULE_NAME).o
+	$(TOOLCHAINS_PREFIX)-strip $(DYNAMIC_OUTFILE)
 clean:
 	$(RM) *.o

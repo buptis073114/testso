@@ -22,7 +22,6 @@
 	.space	120
 	.text
 	.align	2
-	.global	encrypt
 	.type	encrypt, %function
 encrypt:
 	@ args = 0, pretend = 0, frame = 136
